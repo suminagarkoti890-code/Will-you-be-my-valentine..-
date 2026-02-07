@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Playfair Display',serif;
+  background:linear-gradient(120deg,#ffdde1,#ee9ca7);
+  text-align:center;
+  overflow-x:hidden;
+}
+h1{color:#b3003b;}
+
+.heart{
+  position:fixed;
+  top:-10px;
+  font-size:20px;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);}
+}
+
+.envelope{
+  width:300px;height:200px;
+  background:#fff;
+  margin:30px auto;
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  cursor:pointer;
+  position:relative;
+}
+.envelope.open .letter{transform:translateY(-120%);}
+.letter{
+  background:#fffaf0;
+  position:absolute;
+  width:100%;height:100%;
+  border-radius:15px;
+  transition:1s;
+  padding:20px;
+}
+textarea{
+  width:100%;height:120px;
+  border:none;
+  outline:none;
+  background:transparent;
+  font-family:'Great Vibes',cursive;
+  font-size:26px;
+  text-align:center;
+}
+
+button{
+  background:#ff4f79;
+  border:none;
+  color:white;
+  padding:10px 20px;
+  border-radius:20px;
+  margin:10px;
+  font-size:16px;
+}
+
+.gallery{
+  border:10px solid pink;
+  margin:20px;
+  padding:10px;
+}
+.gallery img{
+  width:80px;height:80px;
+  object-fit:cover;
+  border-radius:10px;
+  margin:5px;
+}
+
+#secretNote{
+  display:none;
+  font-family:'Great Vibes',cursive;
+  font-size:28px;
+  margin-top:20px;
+}
+
+#countdown{
+  font-size:22px;
+  margin:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💘 Happy Valentine’s Day 💘</h1>
+
+<!-- Music -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_2a5e9a0c18.mp3">
+</audio>
+<button onclick="toggleMusic()">🎵 Music</button>
+
+<!-- Envelope -->
+<div class="envelope" onclick="openEnvelope(this)">
+  <div class="letter">
+    <textarea placeholder="My love,
+Every heartbeat chooses you.
+Happy Valentine’s Day 💖"></textarea>
+  </div>
+</div>
+
+<!-- Password Note -->
+<h2>🔐 A Note Only for You</h2>
+<input type="password" id="lovePass" placeholder="Enter our secret word"
+style="padding:10px;border-radius:20px;border:none;text-align:center;">
+<br>
+<button onclick="unlockNote()">Unlock My Heart 💖</button>
+
+<p id="secretNote">
+This love was written only for you.  
+Today, tomorrow, and every lifetime —  
+I choose you. 💕
+</p>
+
+<!-- Poem -->
+<button onclick="generatePoem()">✨ Secret Romantic Poem</button>
+<p id="poem"></p>
+
+<!-- Gallery -->
+<h2>📸 Our Memories</h2>
+<input type="file" multiple accept="image/*" onchange="loadImages(event)">
+<div class="gallery" id="gallery"></div>
+
+<!-- Countdown -->
+<div id="countdown"></div>
+
+<!-- Share -->
+<button onclick="shareLove()">🔗 Copy Love Link</button>
+<p id="shareMsg"></p>
+
+<script>
+// hearts
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=3+Math.random()*5+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},300);
+
+// envelope
+function openEnvelope(e){e.classList.toggle("open");}
+
+// music
+function toggleMusic(){
+  const m=document.getElementById("music");
+  m.paused?m.play():m.pause();
+}
+
+// password
+function unlockNote(){
+  const pass="forever"; // change password 💖
+  if(document.getElementById("lovePass").value===pass){
+    document.getElementById("secretNote").style.display="block";
+  }else{
+    alert("That’s not our secret yet… 💔");
+  }
+}
+
+// poems
+const poems=[
+  "You are my favorite forever 🌹",
+  "I didn’t fall in love — I chose you 💖",
+  "Every love song finally makes sense 🎶",
+  "My heart feels at home with you ✨"
+];
+function generatePoem(){
+  document.getElementById("poem").innerText=
+    poems[Math.floor(Math.random()*poems.length)];
+}
+
+// gallery
+function loadImages(e){
+  const g=document.getElementById("gallery");
+  for(let f of e.target.files){
+    const i=document.createElement("img");
+    i.src=URL.createObjectURL(f);
+    g.appendChild(i);
+  }
+}
+
+// countdown
+const v=new Date("Feb 14, 2026 00:00:00").getTime();
+setInterval(()=>{
+  const n=new Date().getTime();
+  const d=v-n;
+  document.getElementById("countdown").innerText=
+    Math.floor(d/(1000*60*60*24))+" days left until Valentine’s 💕";
+},1000);
+
+// share
+function shareLove(){
+  navigator.clipboard.writeText(window.location.href);
+  document.getElementById("shareMsg").innerText=
+    "Link copied 💌 Send it to the one you love.";
+}
+</script>
+
+</body>
+</html>
